@@ -3,11 +3,10 @@
 
 dx3d::Game::Game() {
 
-	m_display = new Window();
+	// There is no need to call delete in the destructor
+	m_display = std::make_unique<Window>();
 }
 
 dx3d::Game::~Game() {
 
-	// Temporary approach, will be changed to smart pointers
-	delete m_display;
 }

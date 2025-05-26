@@ -17,7 +17,10 @@ namespace dx3d {
 
 	private:
 
-		Window* m_display{};
+		// Holds a pointer to a Window instance
+		// When the destructor is called, it automatically deletes
+		// the instance, avoiding memory leaks
+		std::unique_ptr<Window> m_display{};
 
 		// Flag to break outside the infinite loop
 		bool m_isRunning{ true };

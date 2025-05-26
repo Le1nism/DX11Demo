@@ -31,13 +31,24 @@ static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPAR
 // object initialization, and released in object destruction
 dx3d::Window::Window() : Base() {
 
-	// Brace initialization sets the deafult parameters
-	WNDCLASSEX wc{};
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.lpszClassName = L"DX3DWindow";
-	wc.lpfnWndProc = &WindowProcedure;
+	// Lambda function, a function without a name, that can be defined
+	// inline within the body of a function (small throwaway functions for short time use)
+	auto registerWindowClassFunction = []() {
 
-	auto windowClassId = RegisterClassEx(&wc);
+		// Brace initialization sets the deafult parameters
+		WNDCLASSEX wc{};
+		wc.cbSize = sizeof(WNDCLASSEX);
+		wc.lpszClassName = L"DX3DWindow";
+		wc.lpfnWndProc = &WindowProcedure;
+
+		return RegisterClassEx(&wc);
+		};
+
+	// If another window is created and RegisterClassEx is called two or more times from
+	// the same class, the function would fail, and return 0.
+	// To avoid this issue, this variable is static const so that registerWindowClassFunction,
+	// on subsequent calls, will not be executed again, and the same class ID will be reused
+	static const auto windowClassId = std::invoke(registerWindowClassFunction);
 
 	// Checks whether the return values are valid
 	// If the ID is 0, something has gone wrong, an exception has to be thrown

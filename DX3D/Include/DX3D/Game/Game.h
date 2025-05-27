@@ -12,7 +12,7 @@ namespace dx3d {
 		virtual ~Game() override;
 
 		// Main game loop, cannot be further overridden or inherited
-		// to prevent unintended extensions or overrides in the right classes
+		// to prevent unintended extensions or overrides in the derived classes
 		virtual void run() final;
 
 	private:
